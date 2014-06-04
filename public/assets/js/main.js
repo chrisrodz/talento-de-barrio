@@ -44,6 +44,31 @@ $.getJSON("data/municipalities.geojson", function (data) {
   municipalities.addData(data);
 });
 
+var campus_request = "http://data.pr.gov/resource/uaij-e68c?$select=campus, max(igs)&$group=campus";
+$.getJSON(campus_request, function (data) {
+  for (var i = data.length - 1; i >= 0; i--) {
+    var igs = parseInt(data[i]["max_igs"],10);
+    var campus = parseInt(data[i]["campus"],10);
+  };
+
+  //$("#igs").html("<b>"+igs+"</b>");
+  //$("#campus").html("<b>"+campus+"</b>");
+
+    var data = [
+    {
+      name: 'IGS',
+      y: igs,
+      color: '#F2142B'
+    },
+    {
+      name: 'Campus',
+      y: campus, 
+      color: '#F10088'
+    }
+  ];
+  drawChart(data);
+});
+
 var murders = L.geoJson(null, {
   pointToLayer: function (feature, latlng) {
     return L.marker(latlng, {
@@ -324,7 +349,7 @@ var fires = L.geoJson(null, {
   }
 }); 
 
-var request = "http://data.pr.gov/resource/uaij-e68c?$select=genero, count(genero)&$group=genero";
+/*var request = "http://data.pr.gov/resource/uaij-e68c?$select=genero, count(genero)&$group=genero";
 $.getJSON(request, function (data) {
   var male_total = parseInt(data[1]["count_genero"],10);
   var female_total = parseInt(data[2]["count_genero"],10);
@@ -348,7 +373,7 @@ $.getJSON(request, function (data) {
   ];
   drawChart(data);
 
-});
+});*/
 
 map = L.map("map", {
   center: [18.258720, -66.473524],
@@ -531,8 +556,8 @@ function drawChart(data){
           }
       },
       series: [{
-          type: 'pie',
-          name: 'Crimen',
+          type: 'bar',
+          name: 'Campus',
           data: data
       }]
   });
