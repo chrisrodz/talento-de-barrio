@@ -1,4 +1,80 @@
 var map, municipalitieSearch = []
+var Adjuntas = [];
+var Aguada= [];
+var Aguadilla= [];
+var AguasBuenas= [];
+var Aibonito= [];
+var Anasco= [];
+var Arecibo= [];
+var Arroyo= [];
+var Barceloneta= [];
+var Barranquitas= [];
+var Bayamon= [];
+var CaboRojo= [];
+var Caguas= [];
+var Camuy= [];
+var Canovanas= [];
+var Carolina= [];
+var Catano= [];
+var Cayey= [];
+var Ceiba= [];
+var Ciales= [];
+var Cidra= [];
+var Coamo= [];
+var Comerio= [];
+var Corozal= [];
+var Culebra= [];
+var Dorado= [];
+var Guanica= [];
+var Guayama= [];
+var Guayanilla= [];
+var Guaynabo= [];
+var Gurabo= [];
+var Hatillo= [];
+var Hormigueros= [];
+var Humacao= [];
+var Isabela= [];
+var Jayuya= [];
+var JuanaDiaz= [];
+var Juncos= [];
+var Lajas= [];
+var Lares= [];
+var LasMarias= [];
+var LasPiedras= [];
+var Loiza= [];
+var Luquillo= [];
+var Manati= [];
+var Maricao= [];
+var Maunabo= [];
+var Mayaguez= [];
+var Moca= [];
+var Morovis= [];
+var Naguabo= [];
+var Naranjito= [];
+var Orocovis= [];
+var Patillas= [];
+var Penuelas= [];
+var Ponce= [];
+var Quebradillas= [];
+var Rincon= [];
+var RioGrande= [];
+var SabanaGrande= [];
+var Salinas= [];
+var SanGerman= [];
+var SanJuan= [];
+var SanLorenzo= [];
+var SanSebastian= [];
+var SantaIsabel= [];
+var ToaAlta= [];
+var ToaBaja= [];
+var TrujilloAlto= [];
+var Utuado= [];
+var VegaAlta= [];
+var VegaBaja= [];
+var Vieques= [];
+var Villalba= [];
+var Yabucoa= [];
+var Yauco= [];
 
 /* Basemap Layers */
 var mapquestOSM = L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", {
@@ -561,4 +637,274 @@ function drawChart(data){
           data: data
       }]
   });
+}
+
+
+groupByCity("http://data.pr.gov/resource/uaij-e68c?$select=*&$q=13-14");
+function groupByCity(request){
+  $.getJSON(request, function (data) {
+    for (var i = 0 ; i < data.length ; i++) {
+        console.log((JSON.parse(data[i].location_1.human_address).city));
+        switch (JSON.parse(data[i].location_1.human_address).city) {
+          case "ADJUNTAS":
+            Adjuntas.push(data[i]);
+            break;
+          case "AGUADA":
+            Aguada.push(data[i]);
+            break;
+          case "AGUADILLA":
+            Aguadilla.push(data[i]);
+            break;
+          case "AGUAS BUENAS":
+            AguasBuenas.push(data[i]);
+            break;
+          case "AIBONITO":
+            Aibonito.push(data[i]);
+            break;
+          case "ANASCO":
+            Anasco.push(data[i]);
+            break;
+          case "ARECIBO":
+            Arecibo.push(data[i]);
+            break;
+          case "ARROYO":
+            Arroyo.push(data[i]);
+            break;
+          case "BARCELONETA":
+            Barceloneta.push(data[i]);
+            break;
+          case "BARRANQUITAS":
+            Barranquitas.push(data[i]);
+            break;
+          case "BAYAMON":
+            Bayamon.push(data[i]);
+            break;
+          case "CABO ROJO":
+            CaboRojo.push(data[i]);
+            break;
+          case "CAGUAS":
+            Caguas.push(data[i]);
+            break;
+          case "CAMUY":
+            Camuy.push(data[i]);
+            break;
+          case "CANOVANAS":
+            Canovanas.push(data[i]);
+            break;
+          case "CAROLINA":
+            Carolina.push(data[i]);
+            break;
+          case "CATANO":
+            Catano.push(data[i]);
+            break;
+          case "Cayey":
+            Cayey.push(data[i]);
+            break;
+          case "CEIBA":
+            Ceiba.push(data[i]);
+            break;
+          case "CIALES":
+            Ciales.push(data[i]);
+            break;
+          case "CIDRA":
+            Cidra.push(data[i]);
+            break;
+          case "COAMO":
+            Coamo.push(data[i]);
+            break;
+          case "COMERIO":
+            Comerio.push(data[i]);
+            break;
+          case "COROZAL":
+            Corozal.push(data[i]);
+            break;
+          case "CULEBRA":
+            Culebra.push(data[i]);
+            break;
+          case "DORADO":
+            Dorado.push(data[i]);
+            break;
+          case "GUANICA":
+            Guanica.push(data[i]);
+            break;
+          case "GUAYAMA":
+            Guayama.push(data[i]);
+            break;
+          case "GUAYANILLA":
+            Guayanilla.push(data[i]);
+            break;
+          case "GUAYNABO":
+            Guaynabo.push(data[i]);
+            break;
+          case "GURABO":
+            Gurabo.push(data[i]);
+            break;
+          case "HATILLO":
+            Hatillo.push(data[i]);
+            break;
+          case "HORMIGUEROS":
+            Hormigueros.push(data[i]);
+            break;
+          case "HUMACAO":
+            Humacao.push(data[i]);
+            break;
+          case "ISABELA":
+            Isabela.push(data[i]);
+            break;
+          case "JAYUYA":
+            Jayuya.push(data[i]);
+            break;
+          case "JUANA DIAZ":
+            JuanaDiaz.push(data[i]);
+            break;
+          case "JUNCOS":
+            Juncos.push(data[i]);
+            break;
+          case "LAJAS":
+            Lajas.push(data[i]);
+            break;
+          case "LARES":
+            Lares.push(data[i]);
+            break;
+          case "LAS MARIAS":
+            LasMarias.push(data[i]);
+            break;
+          case "LAS PIEDRAS":
+            LasPiedras.push(data[i]);
+            break;
+          case "LOIZA":
+            Loiza.push(data[i]);
+            break;
+          case "LUQUILLO":
+            Luquillo.push(data[i]);
+            break;
+          case "MANATI":
+            Manati.push(data[i]);
+            break;
+          case "MARICAO":
+            Maricao.push(data[i]);
+            break;
+          case "MAUNABO":
+            Maunabo.push(data[i]);
+            break;
+          case "MAYAGUEZ":
+            Mayaguez.push(data[i]);
+            break;
+          case "MOCA":
+            Moca.push(data[i]);
+            break;
+          case "MOROVIS":
+            Morovis.push(data[i]);
+            break;
+          case "NAGUABO":
+            Naguabo.push(data[i]);
+            break;
+          case "NARANJITO":
+            Naranjito.push(data[i]);
+            break;
+          case "OROCOVIS":
+            Orocovis.push(data[i]);
+            break;
+          case "PATILLAS":
+            Patillas.push(data[i]);
+            break;
+          case "PENUELAS":
+            Penuelas.push(data[i]);
+            break;
+          case "PONCE":
+            Ponce.push(data[i]);
+            break;
+          case "QUEBRADILLAS":
+            Quebradillas.push(data[i]);
+            break;
+          case "RINCON":
+            Rincon.push(data[i]);
+            break;
+          case "RIO GRANDE":
+            RioGrande.push(data[i]);
+            break;
+          case "SABANA GRANDE":
+            SabanaGrande.push(data[i]);
+            break;
+          case "SALINAS":
+            Salinas.push(data[i]);
+            break;
+          case "SAN GERMAN":
+            SanGerman.push(data[i]);
+            break;
+          case "SAN JUAN":
+            SanJuan.push(data[i]);
+            break;
+          case "SAN LORENZO":
+            SanLorenzo.push(data[i]);
+            break;
+          case "SAN SEBASTIAN":
+            SanSebastian.push(data[i]);
+            break;
+          case "SANTA ISABEL":
+            SantaIsabel.push(data[i]);
+            break;
+          case "TOA ALTA":
+            ToaAlta.push(data[i]);
+            break;
+          case "TOA BAJA":
+            ToaBaja.push(data[i]);
+            break;
+          case "TRUJILLO ALTO":
+            TrujilloAlto.push(data[i]);
+            break;
+          case "UTUADO":
+            Utuado.push(data[i]);
+            break;
+          case "VEGA ALTA":
+            VegaAlta.push(data[i]);
+            break;
+          case "VEGA BAJA":
+            VegaBaja.push(data[i]);
+            break;
+          case "VIEQUES":
+            Vieques.push(data[i]);
+            break;
+          case "VILLALBA":
+            Villalba.push(data[i]);
+            break;
+          case "YABUCOA":
+            Yabucoa.push(data[i]);
+            break;
+          case "YAUCO":
+            Yauco.push(data[i]);
+            break;
+        }
+    }
+    console.log(SanJuan.length)
+
+
+
+
+
+
+  var male_total = parseInt(data[1]["count_genero"],10);
+  var female_total = parseInt(data[2]["count_genero"],10);
+  $("#male_total").html("<b>"+male_total+"</b>");
+  $("#female_total").html("<b>"+female_total+"</b>");
+
+  //$("#total_genres").html("<b>"+(fire_total)+"</b>");
+  //Create chart
+
+  var data = [
+    {
+      name: 'Masculino',
+      y: male_total,
+      color: '#F2142B'
+    },
+    {
+      name: 'Femenino',
+      y: female_total,
+      color: '#F10088'
+    }
+  ];
+  drawChart(data);
+
+});
+
 }
