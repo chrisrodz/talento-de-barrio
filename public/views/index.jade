@@ -1,0 +1,9 @@
+extends layout
+
+block content
+    h1 Holaa
+    if !user
+      h2 Welcome please login!
+      a(href="/talent/login") login
+    else
+      h2 Hello, #{user.displayName}
