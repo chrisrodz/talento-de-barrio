@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  h2 Perfil para #{user_profile.information.firstName} #{user_profile.information.lastName}
+  h3 Universidad
+  p= user_profile.campus
+  h3 Programa de graduación
+  p= user_profile.program
+  h3 Fecha de Graduación
+  p= user_profile.graduation_date
+  h3 Talentos
+  p= user_profile.talentos
+  h2 Resume / CV
+  a(href='#{user_profile.resume}')
+    img(src='#{user_profile.resume}')

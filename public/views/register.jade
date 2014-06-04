@@ -1,0 +1,26 @@
+extends layout
+
+block content
+
+  h3 #{user.displayName} dejanos saber mas de ti:
+
+  form(action='', method='post' role='form', enctype="multipart/form-data")
+    .form-group
+      label(for='campus') Campus: 
+      input.form-control(type='text', placeholder='Recinto de Graduacion', name='campus')
+    .form-group
+      label(for='program') Program: 
+      input.form-control(type='text', placeholder='Concentracion', name='program')
+    .form-group
+      label(for='graduation_date') Fecha de graduacion: 
+      input.form-control(type='text', placeholder='Mayo 201x', name='graduation_date')
+    .form-group
+      label(for='location_1') Municipio: 
+      input.form-control(type='text', placeholder='Municipio (Ex. Bayamon)', name='location_1')
+    .form-group
+      label(for='resume') Resume / CV:
+      input(type='filepicker', name='resume', required, data-fp-apikey='AhXkgjjYTTuyOTC7J4EZ9z')
+    .form-group
+      label(for='skills') Talentos
+      input.form-control(type='text', name='talentos', placeholder='Python, Mercadeo, Contabilidad')
+    button(type='submit' class='btn btn-default') Someter
