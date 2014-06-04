@@ -25,12 +25,13 @@ var municipalities = L.geoJson(null, {
   style: function (feature) {
     return {
       color: "black",
-      fill: false,
+      fill: true,
       opacity: 1,
-      clickable: false
+      clickable: true,
     };
   },
   onEachFeature: function (feature, layer) {
+    layer.bindPopup("<span id="+feature.properties.NAME+">"+feature.properties.NAME+"</span>"),
     municipalitieSearch.push({
       name: layer.feature.properties.NAME,
       source: "municipalities",
@@ -369,14 +370,16 @@ var baseLayers = {
 
 var overlays = {
   //"Pueblos": municipalities,
-  "<img src='assets/img/marker_murder.png' width='24' height='28'>&nbsp;Asesinatos": L.geoJson(),
-  "<img src='assets/img/marker_rape.png' width='24' height='28'>&nbsp;Violaciones": L.geoJson(),
-  "<img src='assets/img/marker_theft.png' width='24' height='28'>&nbsp;Robos": L.geoJson(),
-  "<img src='assets/img/marker_aggression.png' width='24' height='28'>&nbsp;Agresión Agravada": L.geoJson(),
-  "<img src='assets/img/marker_break_in.png' width='24' height='28'>&nbsp;Escalamientos": L.geoJson(),
-  "<img src='assets/img/marker_misappropriation.png' width='24' height='28'>&nbsp;Apropiación Ilegal": L.geoJson(),
-  "<img src='assets/img/marker_carjacking.png' width='24' height='28'>&nbsp;Vehículos Hurtados": L.geoJson(),
-   "<img src='assets/img/marker_fire.png' width='24' height='28'>&nbsp;Fuego": L.geoJson()
+  "Aguadilla": L.geoJson(),
+  "Cayey": L.geoJson(),
+  "Utuado": L.geoJson(),
+  "Ponce": L.geoJson(),
+  "Mayaguez": L.geoJson(),
+  "Bayamón": L.geoJson(),
+  "Humacao": L.geoJson(),
+  "Arecibo": L.geoJson(),
+  "Carolina": L.geoJson(),
+  "Rio Piedras": L.geoJson()
 };
 
 var layerControl = L.control.layers(baseLayers, overlays, {
