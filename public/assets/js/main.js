@@ -122,27 +122,22 @@ $.getJSON("data/municipalities.geojson", function (data) {
 
 var campus_request = "http://data.pr.gov/resource/uaij-e68c?$select=campus, max(igs)&$group=campus";
 $.getJSON(campus_request, function (data) {
+  var info = []; 
   for (var i = data.length - 1; i >= 0; i--) {
     var igs = parseInt(data[i]["max_igs"],10);
-    var campus = parseInt(data[i]["campus"],10);
-  };
+    var campus = data[i]["campus"];
+    var d = 
+    {
+      name: campus,
+      y: igs,
+      color: '#F2142B'
+    };
+    info.push(d); 
 
   //$("#igs").html("<b>"+igs+"</b>");
   //$("#campus").html("<b>"+campus+"</b>");
-
-    var data = [
-    {
-      name: 'IGS',
-      y: igs,
-      color: '#F2142B'
-    },
-    {
-      name: 'Campus',
-      y: campus, 
-      color: '#F10088'
-    }
-  ];
-  drawChart(data);
+}console.log(info); 
+  drawChart(info);
 });
 
 var murders = L.geoJson(null, {
@@ -437,7 +432,7 @@ $.getJSON(request, function (data) {
 
   var data = [
     {
-      name: 'Masculino',
+      nae: 'Masculino',
       y: male_total,
       color: '#F2142B'
     },
@@ -613,7 +608,7 @@ function drawChart(data){
           plotShadow: false
       },
       title: {
-          text: 'Generos'
+          text: 'IGS'
       },
       tooltip: {
         pointFormat: '<b>{point.y}</b>'
