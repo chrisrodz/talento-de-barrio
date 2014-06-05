@@ -1,4 +1,80 @@
 var map, municipalitieSearch = []
+var Adjuntas = [];
+var Aguada= [];
+var Aguadilla= [];
+var AguasBuenas= [];
+var Aibonito= [];
+var Anasco= [];
+var Arecibo= [];
+var Arroyo= [];
+var Barceloneta= [];
+var Barranquitas= [];
+var Bayamon= [];
+var CaboRojo= [];
+var Caguas= [];
+var Camuy= [];
+var Canovanas= [];
+var Carolina= [];
+var Catano= [];
+var Cayey= [];
+var Ceiba= [];
+var Ciales= [];
+var Cidra= [];
+var Coamo= [];
+var Comerio= [];
+var Corozal= [];
+var Culebra= [];
+var Dorado= [];
+var Guanica= [];
+var Guayama= [];
+var Guayanilla= [];
+var Guaynabo= [];
+var Gurabo= [];
+var Hatillo= [];
+var Hormigueros= [];
+var Humacao= [];
+var Isabela= [];
+var Jayuya= [];
+var JuanaDiaz= [];
+var Juncos= [];
+var Lajas= [];
+var Lares= [];
+var LasMarias= [];
+var LasPiedras= [];
+var Loiza= [];
+var Luquillo= [];
+var Manati= [];
+var Maricao= [];
+var Maunabo= [];
+var Mayaguez= [];
+var Moca= [];
+var Morovis= [];
+var Naguabo= [];
+var Naranjito= [];
+var Orocovis= [];
+var Patillas= [];
+var Penuelas= [];
+var Ponce= [];
+var Quebradillas= [];
+var Rincon= [];
+var RioGrande= [];
+var SabanaGrande= [];
+var Salinas= [];
+var SanGerman= [];
+var SanJuan= [];
+var SanLorenzo= [];
+var SanSebastian= [];
+var SantaIsabel= [];
+var ToaAlta= [];
+var ToaBaja= [];
+var TrujilloAlto= [];
+var Utuado= [];
+var VegaAlta= [];
+var VegaBaja= [];
+var Vieques= [];
+var Villalba= [];
+var Yabucoa= [];
+var Yauco= [];
 
 /* Basemap Layers */
 var mapquestOSM = L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", {
@@ -25,12 +101,13 @@ var municipalities = L.geoJson(null, {
   style: function (feature) {
     return {
       color: "black",
-      fill: false,
+      fill: true,
       opacity: 1,
-      clickable: false
+      clickable: true,
     };
   },
   onEachFeature: function (feature, layer) {
+    layer.bindPopup("<span id="+feature.properties.NAME+">"+feature.properties.NAME+"</span>"),
     municipalitieSearch.push({
       name: layer.feature.properties.NAME,
       source: "municipalities",
@@ -41,6 +118,26 @@ var municipalities = L.geoJson(null, {
 });
 $.getJSON("data/municipalities.geojson", function (data) {
   municipalities.addData(data);
+});
+
+var campus_request = "http://data.pr.gov/resource/uaij-e68c?$select=campus, max(igs)&$group=campus";
+$.getJSON(campus_request, function (data) {
+  var info = []; 
+  for (var i = data.length - 1; i >= 0; i--) {
+    var igs = parseInt(data[i]["max_igs"],10);
+    var campus = data[i]["campus"];
+    var d = 
+    {
+      name: campus,
+      y: igs,
+      color: '#F2142B'
+    };
+    info.push(d); 
+
+  //$("#igs").html("<b>"+igs+"</b>");
+  //$("#campus").html("<b>"+campus+"</b>");
+}console.log(info); 
+  drawChart(info);
 });
 
 var murders = L.geoJson(null, {
@@ -323,101 +420,31 @@ var fires = L.geoJson(null, {
   }
 }); 
 
+/*var request = "http://data.pr.gov/resource/uaij-e68c?$select=genero, count(genero)&$group=genero";
+$.getJSON(request, function (data) {
+  var male_total = parseInt(data[1]["count_genero"],10);
+  var female_total = parseInt(data[2]["count_genero"],10);
+  $("#male_total").html("<b>"+male_total+"</b>");
+  $("#female_total").html("<b>"+female_total+"</b>");
 
-
-var markers = L.markerClusterGroup();
-var crime_collection_request = "http://crimenes-api.herokuapp.com/crimes?polygon=[[-64.500732421875,19.06990562064469],[-68.01361083984375,19.06990562064469],[-68.01361083984375,17.368988699356095],[-64.500732421875,17.368988699356095]]&from_date=2013-01-01&to_date=2014-04-22&is_geojson=true";
-$.getJSON(crime_collection_request, function (data) {
-
-  murders.addData(data['murder']);
-  var murder_total = data['murder']['features'].length;
-  $("#murder_total").html("<b>"+murder_total+"</b>");
-
-  var rape_total = data['rape']['features'].length;
-  rapes.addData(data['rape']);
-  $("#rape_total").html("<b>"+rape_total+"</b>");
-
-  var theft_total = data['theft']['features'].length;
-  thefts.addData(data['theft']);
-  $("#theft_total").html("<b>"+theft_total+"</b>");
-
-  var aggression_total = data['aggression']['features'].length;
-  aggressions.addData(data['aggression']);
-  $("#aggression_total").html("<b>"+aggression_total+"</b>");
-
-  var breakin_total = data['break_in']['features'].length;
-  breakins.addData(data['break_in']);
-  $("#breakin_total").html("<b>"+breakin_total+"</b>");
-
-  var misappropriation_total = data['misappropriation']['features'].length;
-  misappropriations.addData(data['misappropriation']);
-  $("#misappropriation_total").html("<b>"+misappropriation_total+"</b>");
-
-  var carjacking_total = data['carjacking']['features'].length;
-  carjackings.addData(data['carjacking']);
-  $("#carjacking_total").html("<b>"+carjacking_total+"</b>");
-
-  var fire_total = data['fire']['features'].length;
-  fires.addData(data['fire']);
-  $("#fire_total").html("<b>"+fire_total+"</b>");
-
-  $("#total_crimes").html("<b>"+(murder_total+rape_total+theft_total+aggression_total+breakin_total+misappropriation_total+carjacking_total+fire_total)+"</b>");
+  //$("#total_genres").html("<b>"+(fire_total)+"</b>");
   //Create chart
 
   var data = [
     {
-      name: 'Asesinato',
-      y: murder_total,
+      nae: 'Masculino',
+      y: male_total,
       color: '#F2142B'
     },
     {
-      name: 'Violación',
-      y: rape_total,
+      name: 'Femenino',
+      y: female_total,
       color: '#F10088'
-    },
-    {
-      name: 'Robo',
-      y: theft_total,
-      color: '#89C557'
-    },
-    {
-      name: 'Agresión<br>Agravada',
-      y: aggression_total,
-      color: '#FFAE55'
-    },
-    {
-      name: 'Escalamiento',
-      y: breakin_total,
-      color: '#00ABDC'
-    },
-    {
-      name: 'Vehículo<br>Hurtado',
-      y: carjacking_total,
-      color: '#04B67A'
-    },
-    {
-      name: 'Apropiación<br>Ilegal',
-      y: misappropriation_total,
-      sliced: true,
-      selected: true,
-      color: '#8D5D40'
-    },
-    {
-      name: 'Fuego',
-      y: fire_total,
-      color: '#F65736'
     }
   ];
-  drawCrimeChart(data);
+  drawChart(data);
 
-});
-
-
-var heatmap = L.heatLayer(null, {radius: 20, blur:20, max:0.4,maxZoom:18});
-var initial_request = "http://crimenes-api.herokuapp.com/crimes?polygon=[[-64.500732421875,19.06990562064469],[-68.01361083984375,19.06990562064469],[-68.01361083984375,17.368988699356095],[-64.500732421875,17.368988699356095]]&from_date=2013-01-01&to_date=2014-04-22&is_geojson=false";
-$.getJSON(initial_request, function(data) {
-  heatmap.setLatLngs(data);
-});
+});*/
 
 map = L.map("map", {
   center: [18.258720, -66.473524],
@@ -438,79 +465,25 @@ var baseLayers = {
 };
 
 var overlays = {
-  'Ver "Heatmap"': heatmap,
   //"Pueblos": municipalities,
-  "<img src='assets/img/marker_murder.png' width='24' height='28'>&nbsp;Asesinatos": L.geoJson(),
-  "<img src='assets/img/marker_rape.png' width='24' height='28'>&nbsp;Violaciones": L.geoJson(),
-  "<img src='assets/img/marker_theft.png' width='24' height='28'>&nbsp;Robos": L.geoJson(),
-  "<img src='assets/img/marker_aggression.png' width='24' height='28'>&nbsp;Agresión Agravada": L.geoJson(),
-  "<img src='assets/img/marker_break_in.png' width='24' height='28'>&nbsp;Escalamientos": L.geoJson(),
-  "<img src='assets/img/marker_misappropriation.png' width='24' height='28'>&nbsp;Apropiación Ilegal": L.geoJson(),
-  "<img src='assets/img/marker_carjacking.png' width='24' height='28'>&nbsp;Vehículos Hurtados": L.geoJson(),
-   "<img src='assets/img/marker_fire.png' width='24' height='28'>&nbsp;Fuego": L.geoJson()
+  "Aguadilla": L.geoJson(),
+  "Cayey": L.geoJson(),
+  "Utuado": L.geoJson(),
+  "Ponce": L.geoJson(),
+  "Mayaguez": L.geoJson(),
+  "Bayamón": L.geoJson(),
+  "Humacao": L.geoJson(),
+  "Arecibo": L.geoJson(),
+  "Carolina": L.geoJson(),
+  "Rio Piedras": L.geoJson()
 };
 
 var layerControl = L.control.layers(baseLayers, overlays, {
   collapsed: isCollapsed
 }).addTo(map);
 
-map.on('overlayadd',function(a){
-  if(a.name=="<img src='assets/img/marker_murder.png' width='24' height='28'>&nbsp;Asesinatos"){
-    markers.addLayer(murders).addTo(map);
-  }
-  else if(a.name=="<img src='assets/img/marker_rape.png' width='24' height='28'>&nbsp;Violaciones"){
-    markers.addLayer(rapes).addTo(map);
-  }
-  else if(a.name=="<img src='assets/img/marker_theft.png' width='24' height='28'>&nbsp;Robos"){
-    markers.addLayer(thefts).addTo(map);
-  }
-  else if(a.name== "<img src='assets/img/marker_aggression.png' width='24' height='28'>&nbsp;Agresión Agravada"){
-    markers.addLayer(aggressions).addTo(map);
-  }
-  else if(a.name== "<img src='assets/img/marker_break_in.png' width='24' height='28'>&nbsp;Escalamientos"){
-    markers.addLayer(breakins).addTo(map);
-  }
-  else if(a.name== "<img src='assets/img/marker_misappropriation.png' width='24' height='28'>&nbsp;Apropiación Ilegal"){
-    markers.addLayer(misappropriations).addTo(map);
-  }
-  else if(a.name== "<img src='assets/img/marker_carjacking.png' width='24' height='28'>&nbsp;Vehículos Hurtados"){
-    markers.addLayer(carjackings).addTo(map);
-  }
-  else if(a.name== "<img src='assets/img/marker_fire.png' width='24' height='28'>&nbsp;Fuego"){
-    markers.addLayer(fires).addTo(map);
-  }
-});
-
-map.on('overlayremove',function(a){
-  if(a.name=="<img src='assets/img/marker_murder.png' width='24' height='28'>&nbsp;Asesinatos"){
-    markers.removeLayer(murders)
-  }
-  else if(a.name=="<img src='assets/img/marker_rape.png' width='24' height='28'>&nbsp;Violaciones"){
-    markers.removeLayer(rapes);
-  }
-  else if(a.name=="<img src='assets/img/marker_theft.png' width='24' height='28'>&nbsp;Robos"){
-    markers.removeLayer(thefts);
-  }
-  else if(a.name== "<img src='assets/img/marker_aggression.png' width='24' height='28'>&nbsp;Agresión Agravada"){
-    markers.removeLayer(aggressions);
-  }
-  else if(a.name== "<img src='assets/img/marker_break_in.png' width='24' height='28'>&nbsp;Escalamientos"){
-    markers.removeLayer(breakins);
-  }
-  else if(a.name== "<img src='assets/img/marker_misappropriation.png' width='24' height='28'>&nbsp;Apropiación Ilegal"){
-    markers.removeLayer(misappropriations);
-  }
-  else if(a.name== "<img src='assets/img/marker_carjacking.png' width='24' height='28'>&nbsp;Vehículos Hurtados"){
-    markers.removeLayer(carjackings);
-  }
-  else if(a.name== "<img src='assets/img/marker_fire.png' width='24' height='28'>&nbsp;Fuego"){
-    markers.removeLayer(fires);
-  }
-});
-
-
 /* Add overlay layers to map after defining layer control to preserver order */
-map.addLayer(municipalities).addLayer(heatmap);
+map.addLayer(municipalities);
 
 var sidebar = L.control.sidebar("sidebar", {
   closeButton: true,
@@ -627,52 +600,7 @@ if (navigator.appName == "Microsoft Internet Explorer") {
 
 //**************************************************************************
 
-//Events handler
-
-
-
-//---------------------------------
-//Map events
-map.on('zoomend', function(e){
-  zoom = map.getZoom();
-  if (zoom >= 13) {
-
-  };
-
-});
-map.on('dragend', function(e){
-  //fecthCrimes();
-});
-
-function fecthCrimes(action){
-  $("#loading").show();
-  var northEast_bound = map.getBounds()['_northEast'];
-  var southWest_bound = map.getBounds()['_southWest'];
-
-  var northEast = '['+[northEast_bound['lng'],northEast_bound['lat']]+']';
-  var northWest = '['+[southWest_bound['lng'],northEast_bound['lat']]+']';
-  var southWest = '['+[southWest_bound['lng'],southWest_bound['lat']]+']';
-  var southEast = '['+[northEast_bound['lng'],southWest_bound['lat']]+']';
-
-  var polygon = '['+northEast+','+northWest+','+southWest+','+southEast+']';
-  var from_date = '2013-01-01';
-  var to_date = '2014-04-22';
-  
-  if (action == 'initialize') {
-    var is_geojson = false;
-    var request = 'http://crimenes-api.herokuapp.com/crimes?polygon='+polygon+'&from_date='+from_date+'&to_date='+to_date+'&is_geojson='+is_geojson;
-    $.getJSON(request, function(data) {
-      //console.log(data);
-      heatLayer = L.heatLayer(data, {radius: 20, blur:20, max:0.4,maxZoom:18}).addTo(map);
-      $("#loading").hide();
-    });
-  };
-}
-
-
-
-
-function drawCrimeChart(data){
+function drawChart(data){
   $('#container').highcharts({
       chart: {
           plotBackgroundColor: null,
@@ -680,7 +608,7 @@ function drawCrimeChart(data){
           plotShadow: false
       },
       title: {
-          text: 'Tipo de Crimen'
+          text: 'IGS'
       },
       tooltip: {
         pointFormat: '<b>{point.y}</b>'
@@ -691,7 +619,7 @@ function drawCrimeChart(data){
               cursor: 'pointer',
               dataLabels: {
                   enabled: true,
-                  format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                  format: '{point.percentage:.1f} %',
                   style: {
                       color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
                   }
@@ -699,9 +627,279 @@ function drawCrimeChart(data){
           }
       },
       series: [{
-          type: 'pie',
-          name: 'Crimen',
+          type: 'bar',
+          name: 'Campus',
           data: data
       }]
   });
+}
+
+
+groupByCity("http://data.pr.gov/resource/uaij-e68c?$select=*&$q=13-14");
+function groupByCity(request){
+  $.getJSON(request, function (data) {
+    for (var i = 0 ; i < data.length ; i++) {
+        console.log((JSON.parse(data[i].location_1.human_address).city));
+        switch (JSON.parse(data[i].location_1.human_address).city) {
+          case "ADJUNTAS":
+            Adjuntas.push(data[i]);
+            break;
+          case "AGUADA":
+            Aguada.push(data[i]);
+            break;
+          case "AGUADILLA":
+            Aguadilla.push(data[i]);
+            break;
+          case "AGUAS BUENAS":
+            AguasBuenas.push(data[i]);
+            break;
+          case "AIBONITO":
+            Aibonito.push(data[i]);
+            break;
+          case "ANASCO":
+            Anasco.push(data[i]);
+            break;
+          case "ARECIBO":
+            Arecibo.push(data[i]);
+            break;
+          case "ARROYO":
+            Arroyo.push(data[i]);
+            break;
+          case "BARCELONETA":
+            Barceloneta.push(data[i]);
+            break;
+          case "BARRANQUITAS":
+            Barranquitas.push(data[i]);
+            break;
+          case "BAYAMON":
+            Bayamon.push(data[i]);
+            break;
+          case "CABO ROJO":
+            CaboRojo.push(data[i]);
+            break;
+          case "CAGUAS":
+            Caguas.push(data[i]);
+            break;
+          case "CAMUY":
+            Camuy.push(data[i]);
+            break;
+          case "CANOVANAS":
+            Canovanas.push(data[i]);
+            break;
+          case "CAROLINA":
+            Carolina.push(data[i]);
+            break;
+          case "CATANO":
+            Catano.push(data[i]);
+            break;
+          case "Cayey":
+            Cayey.push(data[i]);
+            break;
+          case "CEIBA":
+            Ceiba.push(data[i]);
+            break;
+          case "CIALES":
+            Ciales.push(data[i]);
+            break;
+          case "CIDRA":
+            Cidra.push(data[i]);
+            break;
+          case "COAMO":
+            Coamo.push(data[i]);
+            break;
+          case "COMERIO":
+            Comerio.push(data[i]);
+            break;
+          case "COROZAL":
+            Corozal.push(data[i]);
+            break;
+          case "CULEBRA":
+            Culebra.push(data[i]);
+            break;
+          case "DORADO":
+            Dorado.push(data[i]);
+            break;
+          case "GUANICA":
+            Guanica.push(data[i]);
+            break;
+          case "GUAYAMA":
+            Guayama.push(data[i]);
+            break;
+          case "GUAYANILLA":
+            Guayanilla.push(data[i]);
+            break;
+          case "GUAYNABO":
+            Guaynabo.push(data[i]);
+            break;
+          case "GURABO":
+            Gurabo.push(data[i]);
+            break;
+          case "HATILLO":
+            Hatillo.push(data[i]);
+            break;
+          case "HORMIGUEROS":
+            Hormigueros.push(data[i]);
+            break;
+          case "HUMACAO":
+            Humacao.push(data[i]);
+            break;
+          case "ISABELA":
+            Isabela.push(data[i]);
+            break;
+          case "JAYUYA":
+            Jayuya.push(data[i]);
+            break;
+          case "JUANA DIAZ":
+            JuanaDiaz.push(data[i]);
+            break;
+          case "JUNCOS":
+            Juncos.push(data[i]);
+            break;
+          case "LAJAS":
+            Lajas.push(data[i]);
+            break;
+          case "LARES":
+            Lares.push(data[i]);
+            break;
+          case "LAS MARIAS":
+            LasMarias.push(data[i]);
+            break;
+          case "LAS PIEDRAS":
+            LasPiedras.push(data[i]);
+            break;
+          case "LOIZA":
+            Loiza.push(data[i]);
+            break;
+          case "LUQUILLO":
+            Luquillo.push(data[i]);
+            break;
+          case "MANATI":
+            Manati.push(data[i]);
+            break;
+          case "MARICAO":
+            Maricao.push(data[i]);
+            break;
+          case "MAUNABO":
+            Maunabo.push(data[i]);
+            break;
+          case "MAYAGUEZ":
+            Mayaguez.push(data[i]);
+            break;
+          case "MOCA":
+            Moca.push(data[i]);
+            break;
+          case "MOROVIS":
+            Morovis.push(data[i]);
+            break;
+          case "NAGUABO":
+            Naguabo.push(data[i]);
+            break;
+          case "NARANJITO":
+            Naranjito.push(data[i]);
+            break;
+          case "OROCOVIS":
+            Orocovis.push(data[i]);
+            break;
+          case "PATILLAS":
+            Patillas.push(data[i]);
+            break;
+          case "PENUELAS":
+            Penuelas.push(data[i]);
+            break;
+          case "PONCE":
+            Ponce.push(data[i]);
+            break;
+          case "QUEBRADILLAS":
+            Quebradillas.push(data[i]);
+            break;
+          case "RINCON":
+            Rincon.push(data[i]);
+            break;
+          case "RIO GRANDE":
+            RioGrande.push(data[i]);
+            break;
+          case "SABANA GRANDE":
+            SabanaGrande.push(data[i]);
+            break;
+          case "SALINAS":
+            Salinas.push(data[i]);
+            break;
+          case "SAN GERMAN":
+            SanGerman.push(data[i]);
+            break;
+          case "SAN JUAN":
+            SanJuan.push(data[i]);
+            break;
+          case "SAN LORENZO":
+            SanLorenzo.push(data[i]);
+            break;
+          case "SAN SEBASTIAN":
+            SanSebastian.push(data[i]);
+            break;
+          case "SANTA ISABEL":
+            SantaIsabel.push(data[i]);
+            break;
+          case "TOA ALTA":
+            ToaAlta.push(data[i]);
+            break;
+          case "TOA BAJA":
+            ToaBaja.push(data[i]);
+            break;
+          case "TRUJILLO ALTO":
+            TrujilloAlto.push(data[i]);
+            break;
+          case "UTUADO":
+            Utuado.push(data[i]);
+            break;
+          case "VEGA ALTA":
+            VegaAlta.push(data[i]);
+            break;
+          case "VEGA BAJA":
+            VegaBaja.push(data[i]);
+            break;
+          case "VIEQUES":
+            Vieques.push(data[i]);
+            break;
+          case "VILLALBA":
+            Villalba.push(data[i]);
+            break;
+          case "YABUCOA":
+            Yabucoa.push(data[i]);
+            break;
+          case "YAUCO":
+            Yauco.push(data[i]);
+            break;
+        }
+    }
+    console.log(SanJuan.length)
+
+
+
+
+
+
+  var male_total = parseInt(data[1]["count_genero"],10);
+  var female_total = parseInt(data[2]["count_genero"],10);
+  $("#male_total").html("<b>"+male_total+"</b>");
+  $("#female_total").html("<b>"+female_total+"</b>");
+
+  //$("#total_genres").html("<b>"+(fire_total)+"</b>");
+  //Create chart
+
+  var data = [
+    {
+      name: 'Masculino',
+      y: male_total,
+      color: '#F2142B'
+    },
+    {
+      name: 'Femenino',
+      y: female_total,
+      color: '#F10088'
+    }
+  ];
+  drawChart(data);
+
+});
+
 }
