@@ -1,9 +1,10 @@
 extends layout
 
 block content
-    h1 Holaa
+    h1 Talento de Barrio
     if !user
-      h2 Welcome please login!
-      a(href="/talent/login") login
+      h2 Vamos a virar la busqueda de empleos patas arriba.
+      h3
+        a(href="/talent/login") Login
     else
       h2 Hello, #{user.displayName}
